@@ -9,6 +9,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const devConfig = require("./config/dev");
 const prodConfig = require("./config/prod");
+const { configureJwtStrategy } = require("./jwt/passportAuth");
 
 const environment = process.env.NODE_ENV || "dev";
 const config = environment === "prod" ? prodConfig : devConfig;
@@ -17,22 +18,8 @@ const port = process.env.PORT || config.PORT;
 const mongodbUri = process.env.MONGODB_URI || config.MONGODB_URI;
 
 const app = express();
-
 const proxy = httpProxy.createProxyServer();
-const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
-
-// Define JWT authentication strategy
-const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: jwtSecret,
-};
-passport.use(
-    new JwtStrategy(jwtOptions, (jwt_payload, done) => {
-        // Here, you would typically verify the JWT payload and user in your user database.
-        // For simplicity, we'll just assume the token is valid.
-        return done(null, { id: jwt_payload.sub });
-    })
-);
+passport.use(await configureJwtStrategy());
 
 // Rate limiting middleware
 const apiLimiter = rateLimit({
@@ -40,11 +27,33 @@ const apiLimiter = rateLimit({
     max: 100, // Limit each IP to 100 requests per windowMs
 });
 
-// Logging middleware using Morgan
 app.use(morgan("combined"));
-
-// Authentication middleware
 app.use(passport.initialize());
+
+app.all(
+    "/project/*",
+    apiLimiter,
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+        // Route product requests to the Product Service
+        proxy.web(req, res, { target: "http://project-service:3001" });
+    }
+);
+app.all(
+    "/project-2/*",
+    apiLimiter,
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+        // Route product requests to the Product Service
+        proxy.web(req, res, { target: "http://project2-service:3002" });
+    }
+);
+
+// Handle errors from the microservices
+proxy.on("error", (err, req, res) => {
+    console.error(err);
+    res.status(500).send("Service unavailable");
+});
 
 app.listen(port, () => {
     console.log(`API Gateway is running on port ${port}`);
