@@ -34,16 +34,16 @@ const userModelSchema = mongoose.Schema(
             require: true,
         },
         phoneNumber: {
-            type:String,
-            default:null
-        },
-        presentAddress:{
-            type:String,
-            default:null
-        },
-        permanentAddress:{
             type: String,
-            default:null
+            default: null,
+        },
+        presentAddress: {
+            type: String,
+            default: null,
+        },
+        permanentAddress: {
+            type: String,
+            default: null,
         },
 
         deletedAt: {

@@ -13,7 +13,7 @@ const adminModelSchema = mongoose.Schema(
         },
         firstName: {
             type: String,
-            require:true
+            require: true,
         },
         middleName: {
             type: String,
@@ -21,7 +21,7 @@ const adminModelSchema = mongoose.Schema(
         },
         lastName: {
             type: String,
-            require: true
+            require: true,
         },
         profilePhotoUrl: {
             type: String,
@@ -33,10 +33,10 @@ const adminModelSchema = mongoose.Schema(
             enum: ["active", "delete", "pending", "deactivate"],
             require: true,
         },
-       adminRole:{
+        adminRole: {
             type: String,
-            default: null
-       },
+            default: null,
+        },
         deletedAt: {
             type: Date,
             default: null,
@@ -55,5 +55,5 @@ const adminModelSchema = mongoose.Schema(
     }
 );
 
-const Admin = mongoose.model("Admin",adminModelSchema );
+const Admin = mongoose.model("Admin", adminModelSchema);
 module.exports = Admin;
