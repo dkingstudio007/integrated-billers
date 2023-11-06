@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 
-const adminRoleSettingsModelSchema =
-    ({
+const adminRoleSettingsModelSchema = mongoose.Schema(
+    {
+        roleSettingsName: {
+            type: String,
+            require: true,
+            unique: true,
+        },
         roleId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "AdminRole",
@@ -29,7 +34,8 @@ const adminRoleSettingsModelSchema =
     },
     {
         timestamps: true,
-    });
+    }
+);
 
 const AdminRoleSettings = mongoose.model(
     "AdminRoleSettings",

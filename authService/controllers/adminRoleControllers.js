@@ -1,12 +1,17 @@
 const asyncHandler = require("express-async-handler");
 const AdminRole = require("../models/adminRoleModel");
-const { adminRoleValidation } = require("../validation/authValidation");
+const {
+    adminRoleValidation,
+    roleIdValidation,
+    updateAdminRoleValidation,
+} = require("../validation/authValidation");
 
 const createAdminRole = asyncHandler(async (req, res) => {
     const joiResult = await adminRoleValidation.validateAsync(req.body);
 
     const roleNameExist = await AdminRole.findOne({
         adminRoleName: joiResult.adminRoleName,
+        status: "active",
     });
     if (roleNameExist) {
         res.status(400);
@@ -59,7 +64,7 @@ const getListOfAdminRole = asyncHandler(async (req, res) => {
 });
 
 const updateAdminRoleById = asyncHandler(async (req, res) => {
-    const joiResult = await adminRoleValidation.validateAsync(req.body);
+    const joiResult = await updateAdminRoleValidation.validateAsync(req.body);
 
     const roleNameExist = await AdminRole.findOne({
         adminRoleName: joiResult.adminRoleName,

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const apiServiceModelSchema =
-    ({
+const apiServiceModelSchema = mongoose.Schema(
+    {
         moduleId: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -36,7 +36,8 @@ const apiServiceModelSchema =
     },
     {
         timestamps: true,
-    });
+    }
+);
 
 const ApiService = mongoose.model("ApiService", apiServiceModelSchema);
 module.exports = ApiService;
