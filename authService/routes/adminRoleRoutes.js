@@ -4,11 +4,8 @@ const {
     adminRoleGetById,
     getListOfAdminRole,
     updateAdminRoleById,
-    deleteAdminRoleById
-    } = require("../controllers/adminRoleControllers")
-
-
-s
+    deleteAdminRoleById,
+} = require("../controllers/adminRoleControllers");
 
 const router = express.Router();
 

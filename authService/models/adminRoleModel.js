@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const adminRoleModelSchema =
-    ({
+const adminRoleModelSchema = mongoose.Schema(
+    {
         adminRoleName: {
             type: String,
             require: true,
@@ -23,7 +23,8 @@ const adminRoleModelSchema =
     },
     {
         timestamps: true,
-    });
+    }
+);
 
 const AdminRole = mongoose.model("AdminRole", adminRoleModelSchema);
 module.exports = AdminRole;

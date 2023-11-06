@@ -77,8 +77,8 @@ const updateAdminRoleById = asyncHandler(async (req, res) => {
         {
             adminRoleName: joiResult.AdminRole,
             updatedAt: new Date().toISOString(),
-        },{ new: true }
-        
+        },
+        { new: true }
     );
 
     if (adminRoleUpdate) {
@@ -105,7 +105,7 @@ const deleteAdminRoleById = asyncHandler(async (req, res) => {
         { new: true }
     );
 
-    if (adminRoleDelete ) {
+    if (adminRoleDelete) {
         res.status(204).send("Role deleted successfully");
     } else {
         res.status(400);
@@ -118,5 +118,5 @@ module.exports = {
     adminRoleGetById,
     getListOfAdminRole,
     updateAdminRoleById,
-    deleteAdminRoleById
+    deleteAdminRoleById,
 };
