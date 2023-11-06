@@ -66,6 +66,10 @@ const updateAdminRoleValidation = Joi.object({
 const roleIdValidation = Joi.object({
     roleId: Joi.string().required(),
 });
+const validateAdminLogin = Joi.object({
+    email: Joi.string().email().lowercase().required(),
+    password: Joi.string().min(6).required(),
+});
 
 module.exports = {
     validateUserSignup,
@@ -77,4 +81,5 @@ module.exports = {
     adminRoleValidation,
     updateAdminRoleValidation,
     roleIdValidation,
+    validateAdminLogin
 };
