@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const moduleOrServiceModelSchema =
-    ({
+const moduleOrServiceModelSchema = mongoose.Schema(
+    {
         moduleOrServiceName: {
             type: String,
             require: true,
@@ -23,7 +23,8 @@ const moduleOrServiceModelSchema =
     },
     {
         timestamps: true,
-    });
+    }
+);
 
 const ModuleOrService = mongoose.model(
     "ModuleOrService",

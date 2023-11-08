@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const adminRoleSettingsModelSchema =
-    ({
+const adminRoleSettingsModelSchema = mongoose.Schema(
+    {
         roleId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "AdminRole",
@@ -12,6 +12,11 @@ const adminRoleSettingsModelSchema =
                 ref: "Function",
             },
         ],
+        adminUserId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Admin",
+            unique: true,
+        },
         status: {
             type: String,
             enum: ["active", "delete", "pending", "deactivate"],
@@ -29,7 +34,8 @@ const adminRoleSettingsModelSchema =
     },
     {
         timestamps: true,
-    });
+    }
+);
 
 const AdminRoleSettings = mongoose.model(
     "AdminRoleSettings",

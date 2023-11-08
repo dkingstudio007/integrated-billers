@@ -1,16 +1,22 @@
 const asyncHandler = require("express-async-handler");
 const AdminRole = require("../models/adminRoleModel");
-const { adminRoleValidation } = require("../validation/authValidation");
+const {
+    adminRoleValidation,
+    roleIdValidation,
+    updateAdminRoleValidation,
+} = require("../validation/authValidation");
+const createError = require("http-errors");
 
 const createAdminRole = asyncHandler(async (req, res) => {
     const joiResult = await adminRoleValidation.validateAsync(req.body);
 
     const roleNameExist = await AdminRole.findOne({
         adminRoleName: joiResult.adminRoleName,
+        status: "active",
+        deletedAt: null,
     });
     if (roleNameExist) {
-        res.status(400);
-        throw new Error("Admin Role already exist");
+        throw createError.Conflict("Admin role name already exist!");
     }
     const adminRoleCreate = await AdminRole.create({
         ...joiResult,
@@ -22,8 +28,7 @@ const createAdminRole = asyncHandler(async (req, res) => {
             adminRoleName: adminRoleCreate.adminRoleName,
         });
     } else {
-        res.status(400);
-        throw new Error("Unable to create Admin Role");
+        throw createError.Conflict("Unable to create Admin Role");
     }
 });
 
@@ -39,8 +44,7 @@ const adminRoleGetById = asyncHandler(async (req, res) => {
     if (getRole) {
         res.status(201).json(getRole);
     } else {
-        res.status(404);
-        throw new Error("Role not Found");
+        throw createError.NotFound("Admin Role not found");
     }
 });
 
@@ -53,20 +57,20 @@ const getListOfAdminRole = asyncHandler(async (req, res) => {
     if (getAllRole) {
         res.status(201).json(getAllRole);
     } else {
-        res.status(404);
-        throw new Error("Role not Found");
+        throw createError.NotFound("Admin Role not found");
     }
 });
 
 const updateAdminRoleById = asyncHandler(async (req, res) => {
-    const joiResult = await adminRoleValidation.validateAsync(req.body);
+    const joiResult = await updateAdminRoleValidation.validateAsync(req.body);
 
     const roleNameExist = await AdminRole.findOne({
         adminRoleName: joiResult.adminRoleName,
+        status: "active",
+        deletedAt: null,
     });
     if (roleNameExist) {
-        res.status(400);
-        throw new Error("Admin Role already exist");
+        throw createError.Conflict("Admin Role already exist");
     }
     const adminRoleUpdate = await AdminRole.findOneAndUpdate(
         {
@@ -75,7 +79,7 @@ const updateAdminRoleById = asyncHandler(async (req, res) => {
             deletedAt: null,
         },
         {
-            adminRoleName: joiResult.AdminRole,
+            adminRoleName: joiResult.adminRoleName,
             updatedAt: new Date().toISOString(),
         },
         { new: true }
@@ -84,8 +88,7 @@ const updateAdminRoleById = asyncHandler(async (req, res) => {
     if (adminRoleUpdate) {
         res.status(201).json(adminRoleUpdate);
     } else {
-        res.status(400);
-        throw new Error("Unable to update role");
+        throw createError.BadRequest("Unable to update role");
     }
 });
 
@@ -101,15 +104,15 @@ const deleteAdminRoleById = asyncHandler(async (req, res) => {
         {
             status: "delete",
             deletedAt: new Date().toISOString(),
-        },
-        { new: true }
+        }
     );
 
     if (adminRoleDelete) {
-        res.status(204).send("Role deleted successfully");
+        res.status(200).json({
+            message: "Role deleted successfully",
+        });
     } else {
-        res.status(400);
-        throw new Error("Unable to delete role");
+        throw createError.BadRequest("Unable to delete admin role");
     }
 });
 

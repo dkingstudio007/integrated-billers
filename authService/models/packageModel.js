@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const packageModelSchema =
-    ({
+const packageModelSchema = mongoose.Schema(
+    {
         moduleId: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +32,8 @@ const packageModelSchema =
     },
     {
         timestamps: true,
-    });
+    }
+);
 
 const Package = mongoose.model("Package", packageModelSchema);
 module.exports = Package;

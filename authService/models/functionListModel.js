@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 
-const functionListModelSchema =
-    ({
+const functionListModelSchema = mongoose.Schema(
+    {
         functionName: {
+            type: String,
+            require: true,
+        },
+        apiEndPoint: {
             type: String,
             require: true,
         },
@@ -23,7 +27,8 @@ const functionListModelSchema =
     },
     {
         timestamps: true,
-    });
+    }
+);
 
 const Function = mongoose.model("Function", functionListModelSchema);
 module.exports = Function;
