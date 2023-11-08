@@ -26,17 +26,26 @@ const validateUserLogin = Joi.object({
     password: Joi.string().min(6).required(),
 });
 
+// admin role settings
+
 const adminRoleSettingsValidation = Joi.object({
-    roleSettingsName: Joi.string().required(),
     roleId: Joi.string().required(),
-    functionId: Joi.array().items(Joi.string()),
+    functionId: Joi.array().items(Joi.string()).required(),
+    adminUserId: Joi.string().required(),
 });
 
 const UpdateAdminRoleSettingsValidation = Joi.object({
     roleSettingsId: Joi.string().required(),
-    roleSettingsName: Joi.string().allow(null, ""),
     roleId: Joi.string().allow(null, ""),
     functionId: Joi.array().items(Joi.string()).allow(null, ""),
+});
+
+const roleSettingsIdValidation = Joi.object({
+    roleSettingsId: Joi.string().required(),
+});
+
+const userIdValidation = Joi.object({
+    userId: Joi.string().required(),
 });
 
 const apiServiceValidation = Joi.object({
@@ -62,22 +71,18 @@ const packageValidation = Joi.object({
         ),
 });
 
+// admin role
 const adminRoleValidation = Joi.object({
     adminRoleName: Joi.string().required(),
 });
 
 const updateAdminRoleValidation = Joi.object({
     roleId: Joi.string().required(),
-    adminRoleName: Joi.string().required().allow(null, ""),
-    roleId: Joi.string().required().allow(null, ""),
+    adminRoleName: Joi.string().required(),
 });
 
 const roleIdValidation = Joi.object({
     roleId: Joi.string().required(),
-});
-
-const roleSettingsIdValidation = Joi.object({
-    roleSettingsId: Joi.string().required(),
 });
 
 module.exports = {
@@ -91,4 +96,6 @@ module.exports = {
     updateAdminRoleValidation,
     roleIdValidation,
     roleSettingsIdValidation,
+    UpdateAdminRoleSettingsValidation,
+    userIdValidation,
 };

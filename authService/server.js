@@ -11,6 +11,7 @@ const app = express();
 dotenv.config();
 connectDB();
 
+
 app.use(express.json());
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin-role", adminRoleRoutes);
