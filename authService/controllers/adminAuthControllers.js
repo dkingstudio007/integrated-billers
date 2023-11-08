@@ -85,4 +85,4 @@ const adminLogin = async (req, res, next) => {
     }
 };
 
-module.exports = { registerAdmin };
+module.exports = { registerAdmin, adminLogin };
