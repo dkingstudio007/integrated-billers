@@ -2,7 +2,12 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const Admin = require("../models/adminModel");
 const User = require("../models/userModel");
-const { validateUserSignup } = require("../validation/authValidation");
+const {
+    validateUserSignup,
+    validateAdminLogin,
+} = require("../validation/authValidation");
+
+const { signAccessToken, signRefreshToken } = require("../helper/jwt_helper");
 
 const registerUser = asyncHandler(async (req, res) => {
     const joiResult = await validateUserSignup.validateAsync(req.body);
@@ -44,4 +49,45 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { registerUser };
+const userLogin = async (req, res, next) => {
+    try {
+        const result = await validateAdminLogin.validateAsync(req.body);
+
+        const user = await User.findOne({ email: result.email });
+        if (!user) {
+            throw createError.NotFound("User not registered!");
+        }
+
+        try {
+            const isMatch = await bcrypt.compare(
+                result.password,
+                user.password
+            );
+            if (!isMatch) {
+                throw createError.Unauthorized("Username/Password not valid!");
+            }
+
+            const accessToken = await signAccessToken(user.id);
+            const refreshToken = await signRefreshToken(user.id);
+            res.send({
+                status: 200,
+                message: "Login successful",
+                data: {
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                    fullName: user.fullName,
+                    email: user.email,
+                },
+            });
+        } catch (error) {
+            throw error;
+        }
+    } catch (error) {
+        if (error.isJoi === true) error.status = 422;
+        // if (error.isJoi === true) {
+        //     return next(createError.BadRequest("Invalid Username/Password!"));
+        // }
+        next(error);
+    }
+};
+module.exports = { registerUser, userLogin };

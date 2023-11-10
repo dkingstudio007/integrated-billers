@@ -5,6 +5,7 @@ const moduleOrServiceModelSchema = mongoose.Schema(
         moduleOrServiceName: {
             type: String,
             require: true,
+            unique: true,
         },
         status: {
             type: String,

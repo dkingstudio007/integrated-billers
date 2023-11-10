@@ -12,8 +12,9 @@ const packageModelSchema = mongoose.Schema(
             type: String,
             require: true,
         },
-        validateTime: {
-            type: Date,
+        validateTimeInDay: {
+            type: String,
+            require: true,
         },
         status: {
             type: String,
