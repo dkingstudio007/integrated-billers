@@ -8,6 +8,9 @@ const adminRoleRoutes = require("./routes/adminRoleRoutes");
 const adminRoleSettingsRoutes = require("./routes/adminRoleSettingsRoutes");
 const functionListRoutes = require("./routes/functionListRoutes");
 const swagger = require("./swagger/swagger");
+const moduleOrServiceRoutes = require("./routes/moduleOrServiceRoutes");
+const apiServiceRoutes = require("./routes/apiServiceRoutes");
+const packageRoutes = require("./routes/packageRoutes");
 const app = express();
 dotenv.config();
 connectDB();
@@ -18,6 +21,9 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/admin-role", adminRoleRoutes);
 app.use("/api/admin-role-settings", adminRoleSettingsRoutes);
 app.use("/api/admin/function-list", functionListRoutes);
+app.use("/api/admin/service", moduleOrServiceRoutes);
+app.use("/api/admin/api-service", apiServiceRoutes);
+app.use("/api/admin/package", packageRoutes);
 app.use("/api/user", userRoutes);
 
 app.get("/auth", async (req, res, next) => {

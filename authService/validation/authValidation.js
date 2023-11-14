@@ -48,29 +48,6 @@ const userIdValidation = Joi.object({
     userId: Joi.string().required(),
 });
 
-const apiServiceValidation = Joi.object({
-    moduleId: Joi.array().items(Joi.string()),
-    apiServiceName: Joi.string(),
-    validateTime: Joi.string()
-        .allow(null, "")
-        .pattern(/^\d{4}-\d{2}-\d{2}$/)
-        .message(
-            'Invalid date format. Please provide the date in the format "YYYY-MM-DD"'
-        ),
-    apiKey: Joi.string(),
-});
-
-const packageValidation = Joi.object({
-    moduleId: Joi.array().items(Joi.string()),
-    packageName: Joi.string(),
-    validateTime: Joi.string()
-        .allow(null, "")
-        .pattern(/^\d{4}-\d{2}-\d{2}$/)
-        .message(
-            'Invalid date format. Please provide the date in the format "YYYY-MM-DD"'
-        ),
-});
-
 // admin role
 const adminRoleValidation = Joi.object({
     adminRoleName: Joi.string().required(),
@@ -94,14 +71,11 @@ module.exports = {
     validateAdminSignup,
     validateUserLogin,
     adminRoleSettingsValidation,
-    apiServiceValidation,
-    packageValidation,
     adminRoleValidation,
     updateAdminRoleValidation,
     roleIdValidation,
     roleSettingsIdValidation,
     UpdateAdminRoleSettingsValidation,
     userIdValidation,
-    validateAdminLogin
-
+    validateAdminLogin,
 };

@@ -12,8 +12,9 @@ const apiServiceModelSchema = mongoose.Schema(
             type: String,
             require: true,
         },
-        validateTime: {
-            type: Date,
+        validateTimeInDay: {
+            type: String,
+            require: true,
         },
         apiKey: {
             type: String,
