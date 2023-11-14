@@ -54,7 +54,7 @@ app.get("/api-gateway-error", async (req, res, next) => {
     }
 });
 
-app.all("/auth/*", apiLimiter, (req, res) => {
+app.all("/api/*", apiLimiter, (req, res) => {
     // Route product requests to the Product Service
     //console.log(req);
     proxy.web(req, res, { target: "http://localhost:5000" });
