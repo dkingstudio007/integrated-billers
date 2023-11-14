@@ -26,14 +26,14 @@ app.use("/api/admin/api-service", apiServiceRoutes);
 app.use("/api/admin/package", packageRoutes);
 app.use("/api/user", userRoutes);
 
-app.get("/auth", async (req, res, next) => {
+app.get("/api/auth", async (req, res, next) => {
     res.send({
         code: 200,
         message: "This is auth service",
     });
 });
 
-app.get("/auth/b", async (req, res, next) => {
+app.get("/api/b", async (req, res, next) => {
     res.send({
         code: 200,
         message: "This is auth service b",
