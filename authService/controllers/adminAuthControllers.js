@@ -7,18 +7,17 @@ const {
     validateAdminLogin,
 } = require("../validation/authValidation");
 const { signAccessToken, signRefreshToken } = require("../helper/jwt_helper");
+const createError = require("http-errors");
 
 const registerAdmin = asyncHandler(async (req, res) => {
     const joiResult = await validateAdminSignup.validateAsync(req.body);
     const adminExists = await Admin.findOne({ email: joiResult.email });
     if (adminExists) {
-        res.status(400);
-        throw new Error("Email already exist");
+        throw createError.Conflict("Email already exist");
     }
     const userExists = await User.findOne({ email: joiResult.email });
     if (userExists) {
-        res.status(400);
-        throw new Error("Email already exist");
+        throw createError.Conflict("Email already exist");
     }
 
     const hashedPassword = await bcrypt.hash(joiResult.password, 10);
@@ -38,8 +37,7 @@ const registerAdmin = asyncHandler(async (req, res) => {
             profilePhotoUrl: AdminCreate.profilePhotoUrl,
         });
     } else {
-        res.status(400);
-        throw new Error("Failed to create an user");
+        throw createError.BadRequest("Failed to create an user");
     }
 });
 
