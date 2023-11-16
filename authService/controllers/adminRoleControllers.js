@@ -82,7 +82,7 @@ const updateAdminRoleById = asyncHandler(async (req, res) => {
             adminRoleName: joiResult.adminRoleName,
             updatedAt: new Date().toISOString(),
         },
-        { new: true }
+        { new: true, select: "adminRoleName" }
     );
 
     if (adminRoleUpdate) {

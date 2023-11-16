@@ -6,13 +6,14 @@ const {
     updateApiServiceById,
     deleteApiServiceById,
 } = require("../controllers/apiServiceControllers");
+const { verifyAccessToken } = require("../helper/jwt_helper");
 
 const router = express.Router();
 
-router.route("/create").post(createApiService);
-router.route("/get").get(apiServiceGetById);
-router.route("/get-all").get(getListOfApiService);
-router.route("/update").put(updateApiServiceById);
-router.route("/delete").delete(deleteApiServiceById);
+router.route("/create").post(verifyAccessToken, createApiService);
+router.route("/get").get(verifyAccessToken, apiServiceGetById);
+router.route("/get-all").get(verifyAccessToken, getListOfApiService);
+router.route("/update").put(verifyAccessToken, updateApiServiceById);
+router.route("/delete").delete(verifyAccessToken, deleteApiServiceById);
 
 module.exports = router;
