@@ -13,6 +13,7 @@ const swagger = require("./swagger/swagger.js");
 const { devInfoLogger, devErrorLogger } = require("./logger/devLogger.js");
 const { prodInfoLogger, prodErrorLogger } = require("./logger/prodLogger.js");
 const Logger = require("./logger/prodLogger.js");
+const errorHandler = require("./middleware/errorHandler.js");
 //const { configureJwtStrategy } = require("./jwt/passportAuth");
 
 const environment = process.env.NODE_ENV || "dev";
@@ -78,7 +79,10 @@ app.all("/auth/*", apiLimiter, (req, res) => {
 //         proxy.web(req, res, { target: "http://project2-service:3002" });
 //     }
 // );
-app.use(errorLogger);
+app.use(errorHandler);
+app.use(async (req, res, next) => {
+    next(createError.NotFound("This route does not exist!"));
+});
 // Handle errors from the microservices
 proxy.on("error", (err, req, res) => {
     res.status(500).send({ message: "Service unavailable" });
