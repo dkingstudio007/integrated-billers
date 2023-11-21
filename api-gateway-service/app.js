@@ -92,16 +92,6 @@ proxy.on("error", (err, req, res) => {
     res.status(500).send({ message: "Service unavailable" });
 });
 
-app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.send({
-        error: {
-            status: err.status || 500,
-            message: err.message,
-        },
-    });
-});
-
 app.listen(port, () => {
     console.log(`API Gateway is running on http://localhost:${port}`);
     console.log(`Swagger is running on http://localhost:${port}/api-docs`);
