@@ -6,6 +6,8 @@ const httpProxy = require("http-proxy");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
+var cors = require('cors');
+const createError = require("http-errors");
 dotenv.config();
 const devConfig = require("./config/dev");
 const prodConfig = require("./config/prod");
@@ -26,6 +28,7 @@ const mongodbUri = process.env.MONGODB_URI || config.MONGODB_URI;
 
 const app = express();
 const proxy = httpProxy.createProxyServer();
+app.use(cors());
 //passport.use(configureJwtStrategy());
 
 // Rate limiting middleware
@@ -80,6 +83,7 @@ app.all("/api/*", apiLimiter, (req, res) => {
 //     }
 // );
 app.use(errorHandler);
+app.use(errorLogger);
 app.use(async (req, res, next) => {
     next(createError.NotFound("This route does not exist!"));
 });

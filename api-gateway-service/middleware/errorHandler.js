@@ -1,14 +1,13 @@
 const errorHandler = (err, req, res, next) => {
-    console.log(123)
     if (res.headersSent) {
-      return next(err)
+        return next(err);
     }
-  
+
     res.status(500).json({
-      success: false,
-      error: err.message || 'Server Error',
-      stack: process.env.NODE_ENV === 'prod' ? undefined : err.stack,
-    })
-  }
-  
-  module.exports = errorHandler
+        success: false,
+        error: err.message || "Server Error",
+        stack: process.env.NODE_ENV === "prod" ? undefined : err.stack,
+    });
+};
+
+module.exports = errorHandler;
